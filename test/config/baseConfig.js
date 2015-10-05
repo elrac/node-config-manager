@@ -1,0 +1,10 @@
+{
+  "a":"a",
+  "_load":["file2.js","folder1/file3.js"],
+  "b":{
+    "b":"b"
+  },
+  "c":{},
+  "d":"",
+  "file1":"file1"
+}

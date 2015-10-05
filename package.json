@@ -1,0 +1,14 @@
+{
+  "name": "config-manager",
+  "version": "1.0.0",
+  "description": "this reads and manages configuration files",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/configManagerTest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "test-runner": "github:elrac/node-test-runner"
+  }
+}
