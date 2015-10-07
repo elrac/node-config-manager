@@ -10,7 +10,7 @@
   "author": "Elrac",
   "license": "ISC",
   "devDependencies": {
-    "test-runner": "file:../test-runner"
+    "test-runner": "github:elrac/node-test-runner"
   },
   "repository": "github:elrac/node-config-manager",
   "dependencies": {
