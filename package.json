@@ -4,12 +4,17 @@
   "description": "this reads and manages configuration files",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/configManagerTest"
+    "test": "mocha test/configManagerTest",
+    "testAlt": "mocha test/helperFunctionTestsAlt"
   },
-  "author": "",
+  "author": "Elrac",
   "license": "ISC",
   "devDependencies": {
-    "test-runner": "github:elrac/node-test-runner"
+    "test-runner": "file:../test-runner"
   },
-  "repository": "github:elrac/node-config-manager"
+  "repository": "github:elrac/node-config-manager",
+  "dependencies": {
+    "js-yaml": "^3.4.2",
+    "properties-parser": "^0.3.0"
+  }
 }

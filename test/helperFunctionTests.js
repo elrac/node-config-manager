@@ -72,8 +72,8 @@ exports.runTest = function(cm){
   });
 
   describe('#getObjFromPath()',function(){
-    it('should handle strings, strings with : separator, and arrays of strings',function(){
-      var p = cm.getObjFromPath({a:{b:{c:{d:{e:{f:'success'}}}}}},'a',['b','c','d:e']);
+    it('should handle strings, strings with . separator, and arrays of strings',function(){
+      var p = cm.getObjFromPath({a:{b:{c:{d:{e:{f:'success'}}}}}},'a',['b','c','d.e']);
       expect(p).to.deep.equal({ f: 'success' });
     });
     it('should return the full object on empty',function(){

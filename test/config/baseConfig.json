@@ -1,6 +1,6 @@
 {
   "a":"a",
-  "_load":["file2.js","folder1/file3.js"],
+  "_load":["file2.properties","folder1/file3.yml"],
   "b":{
     "b":"b"
   },

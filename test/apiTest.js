@@ -12,14 +12,15 @@ var testData = {
     }
   },
   "file5":"file5",
-  "d":"file4"
+  "d":"file4",
+  "dArray":[1,"A",{"a":"a"}]
 };
 exports.runTest = function(cm){
   describe('#load()',function(){
 
 
     before(function(){
-        cm.load('./test/config/baseConfig.js');
+        cm.load('./test/config/baseConfig.json');
       });
 
     it('should load files',function(){
@@ -29,10 +30,11 @@ exports.runTest = function(cm){
 
   describe('#get()',function(){
     it('should get config parts',function(){
-      expect(cm.get("b:b")).to.equal("file2");
+      expect(cm.get("b.b")).to.equal("file2");
       expect(cm.get('b','b')).to.equal("file2");
       expect(cm.get(['b','b'])).to.equal("file2");
-      expect(cm.get(['deep','deep:file5'])).to.equal("file5");
+      expect(cm.get(['deep','deep.file5'])).to.equal("file5");
+      expect(cm.get('dArray.2.a')).to.equal('a');
 
       expect(cm.get()).to.deep.equal(testData);
     });

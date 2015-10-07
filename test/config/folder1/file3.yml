@@ -1,0 +1,7 @@
+_load:
+  - file5.json
+  - ~/test/config/file4.json
+c: file3
+deep:
+  deep:
+    _load: file5.json

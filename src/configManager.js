@@ -1,5 +1,9 @@
 var fs = require('fs');
 var path = require('path');
+var yamlParser;
+var pfp = require('./propertyFileParser.js');
+
+var objPathSeparator = '.';
 
 var config = {};
 
@@ -9,11 +13,31 @@ var load = function(filepath,obj,params){
     opath:[]
   }];
 
+  var pathObj;
+  var json;
+  var file;
+
   while(filepaths.length > 0){
-      var pathObj = filepaths.shift();
+      pathObj = filepaths.shift();
 
       try{
-        var json = JSON.parse(fs.readFileSync(pathObj.path, 'utf8'));
+        file = fs.readFileSync(pathObj.path, 'utf8');
+
+        switch(path.extname(pathObj.path)){
+          case '.yaml':
+          case '.yml':
+            json = readYaml(pathObj.path)
+            break;
+          case '.properties':
+            json = pfp(pathObj.path);
+            break;
+          case '.json':
+          default:
+            json = readJson(pathObj.path);
+            break;
+        }
+
+
       }catch(e){
         throw e;
       }
@@ -26,6 +50,8 @@ var load = function(filepath,obj,params){
       merge(getObjFromPath(config,pathObj.opath),json);
   }
 }
+
+
 
 exports.load = function(filepath){
   var params = {
@@ -112,7 +138,7 @@ function objectPathToArray(oPath){
   var toReturn = [];
 
   if(typeof oPath === 'string'){
-    addAll(toReturn,oPath.split(':'));
+    addAll(toReturn,oPath.split(objPathSeparator));
   }else if( Array.isArray(oPath) ){
     oPath.forEach( item => addAll(toReturn,objectPathToArray(item)));
   }else if(typeof oPath === "object"){
@@ -136,6 +162,20 @@ function getObjFromPath(root, path){
   return args.reduce((obj,n) => obj ? obj[n] : null , root);
 }
 
+function readYaml(path){
+  if(!yamlParser){
+    yamlParser = require('js-yaml');
+  }
+
+  return yamlParser.safeLoad(fs.readFileSync(path, 'utf8'));
+}
+
+function readJson(path){
+  return JSON.parse(fs.readFileSync(path, 'utf8'));
+}
+
+
+
 // just exposing these if we are in testing mode
 if(global.testing){
   exports.merge = merge;
@@ -143,4 +183,7 @@ if(global.testing){
   exports.fixFilePath = fixFilePath;
   exports.config = config;
   exports.getObjFromPath = getObjFromPath;
+  exports.readYaml = readYaml;
+  exports.readJson = readJson;
+  exports.readPropertiesFile = pfp;
 }
