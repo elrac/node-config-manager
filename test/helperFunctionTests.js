@@ -83,4 +83,37 @@ exports.runTest = function(cm){
     });
   });
 
+  describe('#createObjFromPath()',function(){
+    var obj;
+    before(function(){
+      obj = {
+        a:{
+          b:{
+            c:'d'
+          }
+        }
+      };
+    });
+
+    it('should return an existing object',function(){
+      var p = cm.createObjFromPath(obj,'a.b.c');
+      expect(p).to.equal('d');
+      expect(obj).to.deep.equal({a:{b:{c:'d'}}});
+    });
+
+    it('should add an empty object when one doesnt exist',function(){
+      var p = cm.createObjFromPath(obj,'a.b.g.d.e.f');
+      console.log(obj);
+
+      expect(p).to.deep.equal({});
+      expect(p).to.equal(obj.a.b.g.d.e.f);
+      expect(obj).to.deep.equal({a:{b:{c:'d',g:{d:{e:{f:{}}}}}}});
+
+      p.a = 'test';
+
+      expect(obj.a.b.g.d.e.f.a,'test if object was added').to.equal('test');
+
+    });
+  });
+
 }

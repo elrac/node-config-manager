@@ -7,7 +7,7 @@ var objPathSeparator = '.';
 
 var config = {};
 
-var load = function(filepath,obj,params){
+var load = function(filepath, baseObj){
   var filepaths = [{
     path:filepath,
     opath:[]
@@ -21,7 +21,6 @@ var load = function(filepath,obj,params){
       pathObj = filepaths.shift();
 
       try{
-        file = fs.readFileSync(pathObj.path, 'utf8');
 
         switch(path.extname(pathObj.path)){
           case '.yaml':
@@ -47,18 +46,19 @@ var load = function(filepath,obj,params){
 
       addAll(filepaths,fpt);
 
-      merge(getObjFromPath(config,pathObj.opath),json);
+      merge(getObjFromPath(baseObj,pathObj.opath),json);
   }
 }
 
 
 
-exports.load = function(filepath){
-  var params = {
-    baseDir:path.dirname(filepath)
-  };
+exports.load = function(filepath, opath){
 
-  load(filepath,config,params);
+
+    load(filepath,createObjFromPath(config,opath));
+
+
+
 }
 
 exports.get = function(){
@@ -159,8 +159,30 @@ function getObjFromPath(root, path){
   if(args.length == 0){
     return root;
   }
-  return args.reduce((obj,n) => obj ? obj[n] : null , root);
+
+  return args.reduce((obj,n) => obj[n] ? obj[n] : null , root);
 }
+
+function createObjFromPath(root,path){
+  if(!path){
+    return root;
+  }
+
+  var args = Array.prototype.slice.call(arguments);
+  args.shift();
+
+  args = objectPathToArray(args);
+
+  args.filter( a => a);
+
+  if(args.length == 0){
+    return root;
+  }
+
+  return args.reduce((obj,n) => obj[n] ? obj[n] : obj[n] = {} , root);
+}
+
+
 
 function readYaml(path){
   if(!yamlParser){
@@ -186,4 +208,6 @@ if(global.testing){
   exports.readYaml = readYaml;
   exports.readJson = readJson;
   exports.readPropertiesFile = pfp;
+  exports.createObjFromPath = createObjFromPath;
+  
 }
